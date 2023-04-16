@@ -1,0 +1,23 @@
+{
+  "createUser": [
+    {
+      "baseUri": "https://reqres.in/",
+      "endPoint": "/api/users?page=2",
+      "payload": "/src/test/resources/requestBody/createUser.json",
+      "statusCode": "201",
+      "method": "POST",
+      "name": "Tarun",
+      "job": "Leader"
+    },
+    {
+      "baseUri": "https://reqres.in/",
+      "endPoint": "/api/users?page=2",
+      "payload": "/src/test/resources/requestBody/createUser.json",
+      "statusCode": "201",
+      "method": "POST",
+      "name": "Priyanka",
+      "job": "Leader"
+    }
+
+  ]
+}
