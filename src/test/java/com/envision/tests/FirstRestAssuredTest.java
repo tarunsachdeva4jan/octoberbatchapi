@@ -3,10 +3,13 @@ package com.envision.tests;
  import com.envision.core.DataProviderArgs;
  import com.envision.core.DataProviderUtils;
  import com.envision.core.RestAssuredActions;
+ import com.envision.pojo.Job;
  import com.envision.utils.ApiUtils;
+ import com.fasterxml.jackson.databind.ObjectMapper;
  import io.restassured.http.Method;
  import io.restassured.response.Response;
  import io.restassured.response.ValidatableResponse;
+ import org.json.JSONObject;
  import org.junit.Assert;
  import org.testng.annotations.Test;
 
@@ -67,14 +70,17 @@ public class FirstRestAssuredTest {
 
     @DataProviderArgs(value="createUser=baseUri,endPoint,payload,statusCode,method,name,job")
     @Test(dataProviderClass = DataProviderUtils.class, dataProvider = "jsonDataProvider")
-    public void testUserCreationPostAPIDuplicate(String baseUri, String endPoint,String payload, String statusCode,String method, String name, String job) throws IOException {
-        String jsonBody = ApiUtils.getStringBody(System.getProperty("user.dir")
-                +payload);
-        jsonBody = jsonBody.replaceAll("%name%",name);
-        jsonBody = jsonBody.replaceAll("%job%",job);
-        Response response =RestAssuredActions.doPostRequest(baseUri,endPoint,method,jsonBody);
+    public void testUserCreationPostAPIPojo(String baseUri, String endPoint,String payload, String statusCode,String method, String name, String job) throws IOException {
+
+        Job jobs = new Job();
+        jobs.setJob("zion resident");
+        jobs.setName("Tarun Sachdeva");
+        JSONObject jsonBody = new JSONObject(jobs);
+        System.out.println(jsonBody);
+        Response response =RestAssuredActions.doPostRequest(baseUri,endPoint,method,jsonBody.toString());
         response.then().and().assertThat().statusCode(Integer.parseInt(statusCode))
                 .and().assertThat().body(containsString("createdAt"));
+
 
     }
 
