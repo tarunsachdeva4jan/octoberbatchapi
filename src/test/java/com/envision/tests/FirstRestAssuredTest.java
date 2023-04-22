@@ -65,5 +65,19 @@ public class FirstRestAssuredTest {
 
     }
 
+    @DataProviderArgs(value="createUser=baseUri,endPoint,payload,statusCode,method,name,job")
+    @Test(dataProviderClass = DataProviderUtils.class, dataProvider = "jsonDataProvider")
+    public void testUserCreationPostAPIDuplicate(String baseUri, String endPoint,String payload, String statusCode,String method, String name, String job) throws IOException {
+        String jsonBody = ApiUtils.getStringBody(System.getProperty("user.dir")
+                +payload);
+        jsonBody = jsonBody.replaceAll("%name%",name);
+        jsonBody = jsonBody.replaceAll("%job%",job);
+        Response response =RestAssuredActions.doPostRequest(baseUri,endPoint,method,jsonBody);
+        response.then().and().assertThat().statusCode(Integer.parseInt(statusCode))
+                .and().assertThat().body(containsString("createdAt"));
+
+    }
+
+
 
 }
